@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Muveletek extends javax.swing.JFrame {
 
@@ -219,6 +220,11 @@ public class Muveletek extends javax.swing.JFrame {
         mnuFajl.add(mnuFajlMent);
 
         jMenuMentesMaskent.setText("Mentés másként...");
+        jMenuMentesMaskent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuMentesMaskentActionPerformed(evt);
+            }
+        });
         mnuFajl.add(jMenuMentesMaskent);
         mnuFajl.add(jSeparator1);
 
@@ -329,6 +335,34 @@ public class Muveletek extends javax.swing.JFrame {
            }
        }
     }//GEN-LAST:event_mnuFajlMentActionPerformed
+
+    private void jMenuMentesMaskentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuMentesMaskentActionPerformed
+       JFileChooser fc = new JFileChooser(new File("."));
+       fc.setDialogTitle("Mentés másként");
+       fc.setAcceptAllFileFilterUsed(false);
+       FileNameExtensionFilter imgFilter =new FileNameExtensionFilter("PNG és GIF képek","png","gif");
+       fc.addChoosableFileFilter(imgFilter);
+       FileNameExtensionFilter txtFilter =new FileNameExtensionFilter("PNG és GIF képek","png","gif");
+       fc.addChoosableFileFilter(txtFilter);
+       FileNameExtensionFilter cspFilter =new FileNameExtensionFilter("PNG és GIF képek","png","gif");
+       fc.addChoosableFileFilter(cspFilter);
+
+      fc.setFileFilter(txtFilter);
+       
+       int valasztottGomb = fc.showSaveDialog(this);
+       if(valasztottGomb==JFileChooser.APPROVE_OPTION){
+           File f= fc.getSelectedFile();
+           if(f.isDirectory()){
+           lblEredmeny.setText("<html>Elérés: "+ f.getPath()+ "<br>Könyvtár: "+f.getName()+"<html>");
+           try{
+               Files.write(Paths.get(f.getPath()+f.getName()),"statisztika".getBytes());
+           }   catch (IOException ex) {
+                   Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
+               }
+           }
+       }
+
+    }//GEN-LAST:event_jMenuMentesMaskentActionPerformed
 
     /**
      * @param args the command line arguments
